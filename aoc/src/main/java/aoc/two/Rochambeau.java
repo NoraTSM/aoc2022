@@ -1,7 +1,16 @@
 package aoc.two;
 
+import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ListIterable;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.utility.ArrayIterate;
+
+import static aoc.two.Rochambeau.Hand.PAPER;
+import static aoc.two.Rochambeau.Hand.ROCK;
+import static aoc.two.Rochambeau.Hand.SCISSORS;
+import static aoc.two.Rochambeau.Outcome.DRAW;
+import static aoc.two.Rochambeau.Outcome.LOSE;
+import static aoc.two.Rochambeau.Outcome.WIN;
 
 public class Rochambeau {
     public long calculateScore(String input) {
@@ -18,73 +27,114 @@ public class Rochambeau {
 
     public static int calculateRound(String[] pair) {
 
-        char yours = pair[1].charAt(0);
-        char opponent = pair[0].charAt(0);
-        int score = handScore(yours);
+        Hand yours = Hand.getHand(pair[1].charAt(0));
+        Hand opponent = Hand.getHand(pair[0].charAt(0));
+        int score = yours.score;
 
         return score + switch (opponent) {
-            case 'A' -> switch (yours) { //ROCK
-                case 'Y' -> 6; //PAPER
-                case 'X' -> 3; //ROCK
-                default -> 0;
+            case ROCK -> switch (yours) { 
+                case PAPER -> WIN.score; 
+                case ROCK -> DRAW.score; 
+                default -> LOSE.score;
             };
-            case 'B' -> switch (yours) { //PAPER
-                case 'Z' -> 6; //SCISSORS
-                case 'Y' -> 3; //PAPER
-                default -> 0;
+            case PAPER -> switch (yours) { 
+                case SCISSORS -> WIN.score; 
+                case PAPER -> DRAW.score;
+                default -> LOSE.score;
             };
-            case 'C' -> switch (yours) { //SCISSORS
-                case 'X' -> 6; //ROCK
-                case 'Z' -> 3; //SCISSORS
-                default -> 0;
+            case SCISSORS -> switch (yours) {
+                case ROCK -> WIN.score;
+                case SCISSORS -> DRAW.score;
+                default -> LOSE.score;
             };
-            default -> 0;
         };
 
-    }
-
-    private static int handScore(char yours) {
-        return switch (yours) {
-            case 'X' -> 1; //ROCK
-            case 'Y' -> 2; //PAPER
-            case 'Z' -> 3; //SCISSORS
-            default -> 0;
-        };
     }
 
     public static int calculateRoundTwo(String[] pair) {
 
-        char outcome = pair[1].charAt(0);
-        char opponent = pair[0].charAt(0);
-        int score = switch (outcome) {
-            case 'X' -> 0; //LOSE
-            case 'Y' -> 3; //DRAW
-            case 'Z' -> 6; //WIN
-            default -> 0;
-        };
-
-        return score + switch (outcome) {
-            case 'X' -> switch (opponent) { //LOSE
-                case 'A' -> 3; //ROCK -> CHOOSE SCISSORS
-                case 'B' -> 1; //PAPER -> CHOOSE ROCK
-                case 'C' -> 2; //SCISSORS -> CHOOSE PAPER
-                default -> 0;
+        Outcome outcome = Outcome.getOutcome(pair[1].charAt(0));
+        Hand opponent = Hand.getHand(pair[0].charAt(0));
+        
+        return outcome.score + switch (outcome) {
+            case LOSE -> switch (opponent) {
+                case ROCK -> SCISSORS.score; 
+                case PAPER -> ROCK.score; 
+                case SCISSORS -> PAPER.score; 
             };
-            case 'Y' -> switch (opponent) { //DRAW
-                case 'A' -> 1; //ROCK
-                case 'B' -> 2; //PAPER
-                case 'C' -> 3; //SCISSORS
-                default -> 0;
+            case DRAW -> opponent.score;
+            case WIN -> switch (opponent) {
+                case ROCK -> PAPER.score; 
+                case PAPER -> SCISSORS.score;
+                case SCISSORS -> ROCK.score;
             };
-            case 'Z' -> switch (opponent) { //WIN
-                case 'A' -> 2; //ROCK -> CHOOSE PAPER
-                case 'B' -> 3; //PAPER -> CHOOSE SCISSORS
-                case 'C' -> 1; //SCISSORS -> CHOOSE ROCK
-                default -> 0;
-            };
-            default -> 0;
         };
 
     }
+
+
+    enum Hand {
+
+        ROCK('X', 'A', 1),
+        PAPER('Y', 'B', 2),
+        SCISSORS('Z', 'C', 3);
+
+        public final char code;
+        public final char other;
+        public final int score;
+        
+        private static MutableMap<Character, Hand> hands = Maps.mutable.empty();
+
+        static {
+            for (Hand h : values()) {
+                hands.put(h.code, h);
+                hands.put(h.other, h);
+            }
+        }
+
+
+        private Hand(char code, char other, int score) {
+            this.code = code;
+            this.other = other;
+            this.score = score;
+        }
+        
+        public static Hand getHand(Character code) {
+            return hands.get(code);
+        }
+        
+    }
+
+    enum Outcome {
+
+        LOSE('X', 0),
+        DRAW('Y', 3),
+        WIN('Z', 6);
+
+        public final char code;
+        public final int score;
+
+        private static MutableMap<Character, Outcome> outcomes = Maps.mutable.empty();
+
+        static {
+            for (Outcome o : values()) {
+                outcomes.put(o.code, o);
+            }
+        }
+
+
+        private Outcome(char code, int score) {
+            this.code = code;
+            this.score = score;
+        }
+
+        public static Outcome getOutcome(Character code) {
+            return outcomes.get(code);
+        }
+
+
+    }
+
+
 
 }
