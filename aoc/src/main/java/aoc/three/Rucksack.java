@@ -13,22 +13,23 @@ import static org.eclipse.collections.impl.utility.StringIterate.chunk;
 public class Rucksack {
 
     public int misplacedPrioritySumTotal(String input) {
-
-        return sum(getBagsWithPriorties(input));
+        return sum(collectIntersectionsAndMapToPriority(getBags(input)));
     }
 
     public int sumOfBadgesGroupsOfN(String input, int n) {
-        RichIterable<RichIterable<CharHashSet>> groups = ArrayIterate.chunk(bags(input), n).collect(each -> each.collect(this::toCharHashSet));
-        return sum(collectIntersectionsAndMapToPriority(groups));
+        return sum(collectIntersectionsAndMapToPriority(collectGroups(input, n)));
 
     }
 
-    private ListIterable<MutableSet<Integer>> getBagsWithPriorties(String input) {
-        RichIterable<RichIterable<CharHashSet>> collect = collect(bags(input),
-                                                                 each -> chunk(each, each.length() / 2)
-                                                                         .collect(this::toCharHashSet));
+    private RichIterable<RichIterable<CharHashSet>> collectGroups(String input, int n) {
+        return ArrayIterate.chunk(bags(input), n).collect(each -> each.collect(this::toCharHashSet));
+    }
 
-        return collectIntersectionsAndMapToPriority(collect.toImmutableList());
+    private RichIterable<RichIterable<CharHashSet>> getBags(String input) {
+        return collect(bags(input),
+                       each -> chunk(each, each.length() / 2)
+                               .collect(this::toCharHashSet));
+
     }
 
     private ListIterable<MutableSet<Integer>> collectIntersectionsAndMapToPriority(RichIterable<RichIterable<CharHashSet>> groups) {
