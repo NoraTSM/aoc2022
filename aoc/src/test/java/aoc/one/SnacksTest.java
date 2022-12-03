@@ -1,4 +1,4 @@
-package org.example.one;
+package aoc.one;
 
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -35,7 +35,7 @@ public class SnacksTest {
 
     @BeforeTest
     static void setup() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream("src/test/java/resources/1.txt");
+        FileInputStream fileInputStream = new FileInputStream("src/test/resources/1.txt");
         input = new String(fileInputStream.readAllBytes());
     }
 
