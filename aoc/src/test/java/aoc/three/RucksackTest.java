@@ -31,26 +31,26 @@ public class RucksackTest {
 
     @Test
     public void testCalculateScore_testInput() {
-        long result = unit.misplacedPrioritySumTotal(testInput);
+        long result = unit.sumOfMisplacedItems(testInput);
         assertThat(result).isEqualTo(157);
     }
 
     @Test
     public void testCalculateScore_input() {
-        long result = unit.misplacedPrioritySumTotal(input);
+        long result = unit.sumOfMisplacedItems(input);
         assertThat(result).isEqualTo(8085);
     }
 
 
     @Test
     public void testSumOfBadgesGroupsOfN_testInput() {
-        long result = unit.sumOfBadgesGroupsOfN(testInput, 3);
+        long result = unit.sumOfBadgesInGroupsOfN(testInput, 3);
         assertThat(result).isEqualTo(70);
     }
 
     @Test
     public void testSumOfBadgesGroupsOfN_input() {
-        long result = unit.sumOfBadgesGroupsOfN(input, 3);
+        long result = unit.sumOfBadgesInGroupsOfN(input, 3);
         assertThat(result).isEqualTo(2515);
     }
 

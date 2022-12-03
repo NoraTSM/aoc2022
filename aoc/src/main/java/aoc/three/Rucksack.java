@@ -6,17 +6,15 @@ import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.set.mutable.primitive.CharHashSet;
 import org.eclipse.collections.impl.utility.ArrayIterate;
-
-import static org.eclipse.collections.impl.utility.ArrayIterate.collect;
-import static org.eclipse.collections.impl.utility.StringIterate.chunk;
+import org.eclipse.collections.impl.utility.StringIterate;
 
 public class Rucksack {
 
-    public int misplacedPrioritySumTotal(String input) {
+    public int sumOfMisplacedItems(String input) {
         return sum(collectIntersectionsAndMapToPriority(getBags(input)));
     }
 
-    public int sumOfBadgesGroupsOfN(String input, int n) {
+    public int sumOfBadgesInGroupsOfN(String input, int n) {
         return sum(collectIntersectionsAndMapToPriority(collectGroups(input, n)));
 
     }
@@ -26,9 +24,9 @@ public class Rucksack {
     }
 
     private RichIterable<RichIterable<CharHashSet>> getBags(String input) {
-        return collect(bags(input),
-                       each -> chunk(each, each.length() / 2)
-                               .collect(this::toCharHashSet));
+        return ArrayIterate.collect(bags(input),
+                       each -> StringIterate.chunk(each, each.length() / 2)
+                                            .collect(this::toCharHashSet));
 
     }
 
