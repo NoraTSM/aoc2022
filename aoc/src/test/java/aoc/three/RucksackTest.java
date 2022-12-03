@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.*;
 
 public class RucksackTest {
 
@@ -32,14 +31,27 @@ public class RucksackTest {
 
     @Test
     public void testCalculateScore_testInput() {
-        long result = unit.misplacedPriority(testInput);
+        long result = unit.misplacedPrioritySumTotal(testInput);
         assertThat(result).isEqualTo(157);
     }
 
     @Test
     public void testCalculateScore_input() {
-        long result = unit.misplacedPriority(input);
+        long result = unit.misplacedPrioritySumTotal(input);
         assertThat(result).isEqualTo(8085);
+    }
+
+
+    @Test
+    public void testSumOfBadgesGroupsOfN_testInput() {
+        long result = unit.sumOfBadgesGroupsOfN(testInput, 3);
+        assertThat(result).isEqualTo(70);
+    }
+
+    @Test
+    public void testSumOfBadgesGroupsOfN_input() {
+        long result = unit.sumOfBadgesGroupsOfN(input, 3);
+        assertThat(result).isEqualTo(2515);
     }
 
 
