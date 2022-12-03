@@ -20,7 +20,7 @@ public class Rochambeau {
 
         char yours = pair[1].charAt(0);
         char opponent = pair[0].charAt(0);
-        int score = toolScore(yours);
+        int score = handScore(yours);
 
         return score + switch (opponent) {
             case 'A' -> switch (yours) { //ROCK
@@ -43,7 +43,7 @@ public class Rochambeau {
 
     }
 
-    private static int toolScore(char yours) {
+    private static int handScore(char yours) {
         return switch (yours) {
             case 'X' -> 1; //ROCK
             case 'Y' -> 2; //PAPER
