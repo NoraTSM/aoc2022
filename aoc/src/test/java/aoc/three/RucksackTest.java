@@ -12,7 +12,6 @@ public class RucksackTest {
 
     static String input;
 
-    Rucksack unit = new Rucksack();
 
     String testInput = """
             vJrwpWtwJgWrhcsFMMfFFhFp
@@ -22,6 +21,8 @@ public class RucksackTest {
             ttgJtRGJQctTZtZT
             CrZsJsPPZsGzwwsLwLmpwMDw
             """;
+
+    Rucksack unit = new Rucksack();
 
     @BeforeTest
     static void setup() throws IOException {
