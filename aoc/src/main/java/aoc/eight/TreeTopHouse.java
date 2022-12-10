@@ -3,7 +3,7 @@ package aoc.eight;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.impl.utility.ArrayIterate;
 
-import static java.lang.Math.max;
+import java.util.Objects;
 
 public class TreeTopHouse {
 
@@ -65,7 +65,7 @@ public class TreeTopHouse {
     }
 
     public ListIterable<ListIterable<Integer>> product(ListIterable<ListIterable<Integer>> first, ListIterable<ListIterable<Integer>> opposite) {
-        return first.collectWithIndex((list, i) -> list.collectWithIndex((element, j) -> max(element, 1) * max(opposite.get(i).get(j), 1)));
+        return first.collectWithIndex((list, i) -> list.collectWithIndex((element, j) -> element * opposite.get(i).get(j)));
     }
 
     public ListIterable<ListIterable<Integer>> transposeInt(ListIterable<ListIterable<Integer>> matrix) {
@@ -76,12 +76,25 @@ public class TreeTopHouse {
     }
 
     public ListIterable<Boolean> visible(ListIterable<Integer> ints) {
-        ListIterable<Boolean> booleans = ints.collectWithIndex((value, j) -> j == 0 || value > ints.subList(0, j).max());
-        return booleans;
+        return ints.collectWithIndex((value, j) -> j == 0 || value > ints.subList(0, j).max());
+    }
+
+    public int blocked(ListIterable<Integer> ints) {
+        int vantagePoint = ints.getFirst();
+        ListIterable<Integer> integers = ints.collectWithIndex((value, j) -> {
+             if (j != 0 && value >= vantagePoint) {
+                return j;
+            } else if (j > 1  && value < ints.subList(1, j).max()) {
+                return j - 1;
+            }
+            return null;
+        });
+
+        return integers.detectOptional(Objects::nonNull).orElse(ints.size() - 1);
     }
 
     public ListIterable<Integer> scenic(ListIterable<Integer> ints) {
-        return ints.collectWithIndex((value, j) ->  visible(ints.subList(0, j)).select(Boolean::booleanValue).size());
+        return ints.collectWithIndex((value, j) ->  blocked(ints.subList(j, ints.size())));
     }
 
 }

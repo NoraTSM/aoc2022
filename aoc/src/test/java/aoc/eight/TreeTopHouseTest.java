@@ -1,6 +1,5 @@
 package aoc.eight;
 
-import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ListIterable;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -62,13 +61,11 @@ public class TreeTopHouseTest {
         input = new String(fileInputStream.readAllBytes());
     }
 
-
     @Test
     public void testPossibleLocations_testInput() {
         int result = unit.possibleLocations(testInput);
         assertThat(result).isEqualTo(21);
     }
-
 
     @Test
     public void testPossibleLocations_input() {
@@ -90,33 +87,10 @@ public class TreeTopHouseTest {
         assertThat(result).isEqualTo(8);
     }
 
-
     @Test
     public void testScenicLocationstest_input() {
         int result = unit.scenicLocations(input);
-        assertThat(result).isEqualTo(2058); //Too low
+        assertThat(result).isEqualTo(200); //Too low 2058 earlier
     }
 
-    @Test
-    public void testScenic() {
-        int max = 2;
-        ListIterable<Integer> ints = Lists.immutable.of(3, 2, 5, 9);
-        ListIterable<Integer> scenicScores = unit.scenic(ints);
-        assertThat(scenicScores.max()).isEqualTo(max);
-    }
-
-    @Test
-    public void testProduct_Zero_One() {
-        assertThat(unit.product(unit.matrix(testOnes), unit.matrix(testZeros))).isEqualTo(unit.matrix(testOnes));
-    }
-
-    @Test
-    public void testProduct_Zero_Zero() {
-        assertThat(unit.product(unit.matrix(testZeros), unit.matrix(testZeros))).isEqualTo(unit.matrix(testOnes));
-    }
-
-    @Test
-    public void testProduct_Two_Two() {
-        assertThat(unit.product(unit.matrix(testMinigrid), unit.matrix(testReverse))).isEqualTo(unit.matrix(testProduct));
-    }
 }
