@@ -82,7 +82,7 @@ public class TreeTopHouse {
     public int blocked(ListIterable<Integer> ints) {
         int vantagePoint = ints.getFirst();
         ListIterable<Integer> integers = ints.collectWithIndex((value, j) -> {
-             if (j != 0 && value >= vantagePoint) {
+             if (j > 0 && value >= vantagePoint) {
                 return j;
             } else if (j > 1  && value < ints.subList(1, j).max()) {
                 return j - 1;
@@ -90,7 +90,7 @@ public class TreeTopHouse {
             return null;
         });
 
-        return integers.detectOptional(Objects::nonNull).orElse(ints.size() - 1);
+        return integers.detectOptional(Objects::nonNull).orElse(ints.size() == 0 ? 0 :  ints.size() - 1);
     }
 
     public ListIterable<Integer> scenic(ListIterable<Integer> ints) {
