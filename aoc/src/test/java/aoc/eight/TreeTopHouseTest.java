@@ -1,7 +1,7 @@
 package aoc.eight;
 
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ListIterable;
-import org.eclipse.collections.api.list.MutableList;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -21,6 +21,37 @@ public class TreeTopHouseTest {
             33549
             35390
             """;
+
+    String testOnes = """
+            111
+            111
+            111
+            """;
+
+    String testZeros= """
+            000
+            000
+            000
+            """;
+
+    String testMinigrid = """
+            210
+            210
+            210
+            """;
+
+    String testReverse = """
+            012
+            012
+            012
+            """;
+
+    String testProduct = """
+            212
+            212
+            212
+            """;
+
 
     TreeTopHouse unit = new TreeTopHouse();
 
@@ -42,14 +73,50 @@ public class TreeTopHouseTest {
     @Test
     public void testPossibleLocations_input() {
         int result = unit.possibleLocations(input);
-        assertThat(result).isEqualTo(21);
+        assertThat(result).isEqualTo(1669);
     }
 
     @Test
     public void testTranspose() {
-        ListIterable<MutableList<Integer>> matrix = unit.matrix(testInput);
-        ListIterable<MutableList<Integer>> mutableLists = unit.transposeInt(matrix);
+        ListIterable<ListIterable<Integer>> matrix = unit.matrix(testInput);
+        ListIterable<ListIterable<Integer>> mutableLists = unit.transposeInt(matrix);
         assertThat(unit.transposeInt(mutableLists)).isEqualTo(matrix);
 
+    }
+
+    @Test
+    public void testScenicLocations_testInput() {
+        int result = unit.scenicLocations(testInput);
+        assertThat(result).isEqualTo(8);
+    }
+
+
+    @Test
+    public void testScenicLocationstest_input() {
+        int result = unit.scenicLocations(input);
+        assertThat(result).isEqualTo(2058); //Too low
+    }
+
+    @Test
+    public void testScenic() {
+        int max = 2;
+        ListIterable<Integer> ints = Lists.immutable.of(3, 2, 5, 9);
+        ListIterable<Integer> scenicScores = unit.scenic(ints);
+        assertThat(scenicScores.max()).isEqualTo(max);
+    }
+
+    @Test
+    public void testProduct_Zero_One() {
+        assertThat(unit.product(unit.matrix(testOnes), unit.matrix(testZeros))).isEqualTo(unit.matrix(testOnes));
+    }
+
+    @Test
+    public void testProduct_Zero_Zero() {
+        assertThat(unit.product(unit.matrix(testZeros), unit.matrix(testZeros))).isEqualTo(unit.matrix(testOnes));
+    }
+
+    @Test
+    public void testProduct_Two_Two() {
+        assertThat(unit.product(unit.matrix(testMinigrid), unit.matrix(testReverse))).isEqualTo(unit.matrix(testProduct));
     }
 }
